@@ -1,0 +1,9 @@
+name: Proj_diabete
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - pandas
+  - pyarrow<21
+  - jinja2
+prefix: /home/paulo-vinicius/miniconda3/envs/Proj_diabete
