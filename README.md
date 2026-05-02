@@ -1,19 +1,14 @@
 # Análise estatística de base de dados de diabetes
 
 Projeto de análise exploratória e estatística desenvolvido com base no
-dataset **Diabetes Health Indicators** disponível no Kaggle, originado
+dataset **Diabetes Health Indicators**, disponível no Kaggle e originado
 da pesquisa BRFSS 2015 conduzida pelo CDC (Centers for Disease Control
 and Prevention).
 
-A base contém 253.680 respostas de uma pesquisa de saúde comportamental
-aplicada nos Estados Unidos, com 22 variáveis que combinam indicadores
-clínicos, hábitos de vida e dados demográficos. A variável-alvo
-(`Diabetes_binary`) indica a presença ou ausência de diabetes/pré-diabetes.
-
-O objetivo do projeto foi explorar e entender a distribuição dos dados,
-identificar padrões entre as variáveis e extrair insights sobre os
-indicadores mais associados ao diagnóstico de diabetes — sem uso de
-modelos preditivos.
+A base reúne respostas de uma pesquisa de saúde comportamental aplicada
+nos Estados Unidos, combinando indicadores clínicos, hábitos de vida e
+dados demográficos. O objetivo foi explorar a distribuição dos dados e
+identificar padrões entre as variáveis e o diagnóstico de diabetes.
 
 ![imagem](imagens/diabetes.jpg)
 
