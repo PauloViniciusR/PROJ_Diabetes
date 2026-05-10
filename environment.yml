@@ -1,9 +1,10 @@
 name: Proj_diabete
 channels:
+  - conda-forge
   - defaults
 dependencies:
   - python=3.11
   - pandas
+  - plotly
   - pyarrow<21
-  - jinja2
-prefix: /home/paulo-vinicius/miniconda3/envs/Proj_diabete
+  - streamlit
