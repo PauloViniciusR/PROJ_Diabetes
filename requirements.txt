@@ -1,0 +1,4 @@
+pandas
+pyarrow<21
+plotly
+streamlit

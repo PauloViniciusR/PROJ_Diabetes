@@ -49,8 +49,27 @@ identificar padrões entre as variáveis e o diagnóstico de diabetes.
    conda env create -f ambiente.yml --name estatistica
    ```
 
+## Executando o painel Streamlit
+
+O projeto também possui um painel interativo em Streamlit para explorar a base
+tratada.
+
+Para executar localmente:
+
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+Para publicar no Streamlit Community Cloud:
+
+1. Envie o repositório para o GitHub.
+2. Acesse <https://share.streamlit.io/>.
+3. Crie um novo app apontando para este repositório.
+4. Defina o arquivo principal como `app.py`.
+5. Confirme que o arquivo `dados/diabetes_tratado.parquet` está no repositório.
+
 ## Um pouco mais sobre a base
 
 [Clique aqui](referencias/01_dicionario_de_dados.md) para ver o dicionário de dados da base utilizada.
-
 
