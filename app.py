@@ -266,6 +266,9 @@ def resumir_matriz_comparativa(
     linhas: str,
     colunas: str,
 ) -> pd.DataFrame:
+    if linhas == colunas:
+        return pd.DataFrame()
+
     return (
         dados.assign(Diabetico=dados["Diabetes"].eq("Sim"))
         .groupby([linhas, colunas], observed=False)
@@ -448,6 +451,7 @@ def grafico_ranking_fatores(dados: pd.DataFrame):
         y="Variável",
         orientation="h",
         color="Taxa de diabetes",
+        text=ranking.head(10)["Diferença vs menor grupo"].map(formatar_percentual),
         color_continuous_scale=["#16a34a", "#f59e0b", "#dc2626"],
         hover_data={
             "Grupo de maior taxa": True,
@@ -458,15 +462,21 @@ def grafico_ranking_fatores(dados: pd.DataFrame):
     )
     fig.update_layout(
         xaxis_tickformat=".0%",
+        xaxis_title="Diferença entre maior e menor taxa de diabetes",
         yaxis={"categoryorder": "total ascending"},
+        yaxis_title="Variável analisada",
         coloraxis_showscale=False,
         height=480,
     )
+    fig.update_traces(textposition="inside", textfont={"color": "#ffffff"})
     return fig, ranking
 
 
 def grafico_heatmap_comparativo(dados: pd.DataFrame, linhas: str, colunas: str):
     matriz = resumir_matriz_comparativa(dados, linhas, colunas)
+    if matriz.empty:
+        return None
+
     fig = px.density_heatmap(
         matriz,
         x=colunas,
@@ -501,14 +511,19 @@ def exibir_dashboard_executivo(dados: pd.DataFrame):
             "grupos em que a presença de diabetes é mais frequente no recorte filtrado."
         )
 
-    st.subheader("Variáveis com maior separação entre grupos")
+    st.subheader("Ranking de associação com diabetes")
     fig, ranking = grafico_ranking_fatores(dados)
     st.plotly_chart(fig, use_container_width=True)
     exibir_descricao(
-        "Este ranking mede a diferença, em pontos percentuais, entre o grupo de maior "
-        "taxa e o grupo de menor taxa dentro de cada variável. Diferenças maiores "
-        "sugerem associação mais forte com o diagnóstico, mas não provam causa."
+        "Origem da análise: para cada variável, o app calcula a taxa de diabetes em todos "
+        "os seus grupos e compara o grupo com maior taxa contra o grupo com menor taxa. "
+        "A barra mostra essa diferença em pontos percentuais."
     )
+    st.caption(
+        "Exemplo: em `SaudeGeral`, compara-se a categoria com maior taxa de diabetes "
+        "contra a categoria com menor taxa dentro dessa mesma variável."
+    )
+    st.subheader("Detalhe do ranking")
     st.dataframe(
         ranking.head(8).style.format(
             {
@@ -523,6 +538,11 @@ def exibir_dashboard_executivo(dados: pd.DataFrame):
 
 def exibir_explorador_fatores(dados: pd.DataFrame):
     exibir_metricas(dados)
+    st.markdown(
+        "Explore os gráficos abaixo para investigar, com mais detalhe, como cada fator "
+        "categórico se relaciona com a taxa de diabetes e como os indicadores numéricos "
+        "se distribuem entre pessoas com e sem diabetes."
+    )
     col1, col2 = st.columns([1, 1])
     with col1:
         coluna_categoria = st.selectbox(
@@ -578,6 +598,14 @@ def exibir_comparacao_grupos(dados: pd.DataFrame):
             options=COLUNAS_CATEGORICAS,
             index=COLUNAS_CATEGORICAS.index("SaudeGeral"),
         )
+
+    if linhas == colunas:
+        st.info(
+            "Escolha variáveis diferentes para linhas e colunas. Comparar uma variável "
+            "com ela mesma não forma uma matriz útil; para analisar esse fator isolado, "
+            "use o modo Explorador de fatores."
+        )
+        return
 
     st.plotly_chart(
         grafico_heatmap_comparativo(dados, linhas, colunas),
