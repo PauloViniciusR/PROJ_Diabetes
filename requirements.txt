@@ -1,4 +1,4 @@
-pandas
+pandas>=2.2
+plotly>=5.22
 pyarrow<21
-plotly
-streamlit
+streamlit>=1.36
